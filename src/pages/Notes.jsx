@@ -1,47 +1,54 @@
-import  { useEffect, useState } from 'react'
+import useLocalStorage from "../hooks/useLocalStorage"
+import { useState } from "react"
 
 export default function Notes() {
-    const [note,setNote]=useState("")
-    const [notesList,setNoteList]=useState([])
 
+  const [notesList, setNotesList] = useLocalStorage("notes", [])
+  const [note, setNote] = useState("")
+  const [search, setSearch] = useState("")
 
-    useEffect(()=>{
-        const savedNotes = JSON.parse(localStorage.getItem("notes"))
-        
-        if(savedNotes){
-            setNoteList(savedNotes)
-        }
-      
-    },[])
+  const handleAddNote = () => {
+    if (!note.trim()) return
+    setNotesList([...notesList, note])
+    setNote("")
+  }
 
-    useEffect(()=>{
-        localStorage.setItem("notes",JSON.stringify(notesList))
-    },[notesList])
+  const handleDelete = (index) => {
+    setNotesList(notesList.filter((_, i) => i !== index))
+  }
 
-    const handleAddNote = () =>{
-        if(note.trim()==="")return
-        setNoteList([...notesList,note])
-        setNote("")
-    }
-    const handleDeleteNote = (index) =>{
-        const updated = notesList.filter((_, i) => i !== index)
-        setNoteList(updated)
-    }
-    return (<div>
-       <h1>Notes</h1>
-       <input type="text" value={note} onChange={(e) => setNote(e.target.value)}
-       placeholder="Write note.." />
+  const filteredNotes = notesList.filter(n =>
+    n.toLowerCase().includes(search.toLowerCase())
+  )
 
-       <button onClick={handleAddNote}>Add</button>
+  return (
+    <div>
+      <h1>Notes</h1>
 
-       <ul>
-        {notesList.map((n,index) => (
-            <li key={index}>{n}
-            <button onClick={() => handleDeleteNote(index)}>Delete</button>
-            </li>
+      <input
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <br /><br />
+
+      <input
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        placeholder="Write note..."
+      />
+
+      <button onClick={handleAddNote}>Add</button>
+
+      <ul>
+        {filteredNotes.map((n, index) => (
+          <li key={index}>
+            {n}
+            <button onClick={() => handleDelete(index)}>Delete</button>
+          </li>
         ))}
-       </ul>
-
+      </ul>
     </div>
-    )
+  )
 }
