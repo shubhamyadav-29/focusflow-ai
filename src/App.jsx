@@ -126,6 +126,7 @@ import Notes from "./pages/Notes";
 import Tasks from "./pages/Tasks";
 import Login from "./pages/Login";
 import DashboardLayout from "./layouts/DashboardLayout";
+import ProtectedRoute from "./components/ProtectedRoute"
 
 function App() {
   return (
@@ -135,27 +136,33 @@ function App() {
       <Route
         path="/"
         element={
-          <DashboardLayout>
-            <Dashboard />
-          </DashboardLayout>
+          <ProtectedRoute>
+      <DashboardLayout>
+        <Dashboard />
+      </DashboardLayout>
+    </ProtectedRoute>
         }
       />
 
       <Route
         path="/notes"
         element={
-          <DashboardLayout>
-            <Notes />
-          </DashboardLayout>
+          <ProtectedRoute>
+      <DashboardLayout>
+        <Notes />
+      </DashboardLayout>
+    </ProtectedRoute>
         }
       />
 
       <Route
         path="/tasks"
         element={
-          <DashboardLayout>
-            <Tasks />
-          </DashboardLayout>
+           <ProtectedRoute>
+      <DashboardLayout>
+        <Tasks />
+      </DashboardLayout>
+    </ProtectedRoute>
         }
       />
     </Routes>
