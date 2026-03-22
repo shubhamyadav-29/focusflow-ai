@@ -5,33 +5,34 @@ export default function Notes() {
 
   const [notesList, setNotesList] = useLocalStorage("notes", [])
   const [note, setNote] = useState("")
-  const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
 
-  const handleAddNote = () => {
-    if (!note.trim()) return
+  const handleAddNote = async () => {
+
+    if (!note.trim()) {
+      setMessage("Note cannot be empty ❌")
+      return
+    }
+
+    setLoading(true)
+
+    // ⭐ fake API delay
+    await new Promise(res => setTimeout(res, 1000))
+
     setNotesList([...notesList, note])
     setNote("")
-  }
+    setLoading(false)
+    setMessage("Note added successfully ✅")
 
-  const handleDelete = (index) => {
-    setNotesList(notesList.filter((_, i) => i !== index))
+    setTimeout(() => setMessage(""), 2000)
   }
-
-  const filteredNotes = notesList.filter(n =>
-    n.toLowerCase().includes(search.toLowerCase())
-  )
 
   return (
     <div>
       <h1>Notes</h1>
 
-      <input
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <br /><br />
+      {message && <p>{message}</p>}
 
       <input
         value={note}
@@ -39,14 +40,13 @@ export default function Notes() {
         placeholder="Write note..."
       />
 
-      <button onClick={handleAddNote}>Add</button>
+      <button onClick={handleAddNote}>
+        {loading ? "Adding..." : "Add"}
+      </button>
 
       <ul>
-        {filteredNotes.map((n, index) => (
-          <li key={index}>
-            {n}
-            <button onClick={() => handleDelete(index)}>Delete</button>
-          </li>
+        {notesList.map((n, i) => (
+          <li key={i}>{n}</li>
         ))}
       </ul>
     </div>
