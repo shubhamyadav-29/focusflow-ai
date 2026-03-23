@@ -1,10 +1,12 @@
 import useLocalStorage from "../hooks/useLocalStorage"
 import { useState } from "react"
+import NoteCard from "../components/NoteCard"
 
 export default function Notes() {
 
   const [notesList, setNotesList] = useLocalStorage("notes", [])
   const [note, setNote] = useState("")
+  const [search, setSearch] = useState("")
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
@@ -17,7 +19,6 @@ export default function Notes() {
 
     setLoading(true)
 
-    // ⭐ fake API delay
     await new Promise(res => setTimeout(res, 1000))
 
     setNotesList([...notesList, note])
@@ -28,11 +29,27 @@ export default function Notes() {
     setTimeout(() => setMessage(""), 2000)
   }
 
+  const handleDelete = (index) => {
+    setNotesList(notesList.filter((_, i) => i !== index))
+  }
+
+  const filteredNotes = notesList.filter(n =>
+    n.toLowerCase().includes(search.toLowerCase())
+  )
+
   return (
     <div>
       <h1>Notes</h1>
 
       {message && <p>{message}</p>}
+
+      <input
+        placeholder="Search..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <br /><br />
 
       <input
         value={note}
@@ -44,11 +61,16 @@ export default function Notes() {
         {loading ? "Adding..." : "Add"}
       </button>
 
-      <ul>
-        {notesList.map((n, i) => (
-          <li key={i}>{n}</li>
-        ))}
-      </ul>
+      {
+        filteredNotes.map((n, index) => (
+          <NoteCard
+            key={index}
+            text={n}
+            onDelete={() => handleDelete(index)}
+          />
+        ))
+      }
+
     </div>
   )
 }
