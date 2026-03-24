@@ -1,5 +1,5 @@
 import useLocalStorage from "../hooks/useLocalStorage"
-import { useState } from "react"
+import { useState,useMemo } from "react"
 import NoteCard from "../components/NoteCard"
 
 export default function Notes() {
@@ -33,9 +33,11 @@ export default function Notes() {
     setNotesList(notesList.filter((_, i) => i !== index))
   }
 
-  const filteredNotes = notesList.filter(n =>
+ const filteredNotes = useMemo(() => {
+  return notesList.filter(n =>
     n.toLowerCase().includes(search.toLowerCase())
   )
+}, [notesList, search])
 
   return (
     <div>

@@ -1,4 +1,6 @@
-export default function NoteCard({ text, onDelete }) {
+import React from "react"
+
+function NoteCard({ text, onDelete }) {
 
   return (
     <div style={{
@@ -9,9 +11,9 @@ export default function NoteCard({ text, onDelete }) {
     }}>
       <p>{text}</p>
 
-      <button onClick={onDelete}>
-        Delete
-      </button>
+      <button onClick={onDelete}>Delete</button>
     </div>
   )
 }
+
+export default React.memo(NoteCard)
