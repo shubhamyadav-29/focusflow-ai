@@ -1,5 +1,5 @@
 import useLocalStorage from "../hooks/useLocalStorage"
-import { useState,useMemo } from "react"
+import { useState,useMemo , useCallback} from "react"
 import NoteCard from "../components/NoteCard"
 
 export default function Notes() {
@@ -29,9 +29,11 @@ export default function Notes() {
     setTimeout(() => setMessage(""), 2000)
   }
 
-  const handleDelete = (index) => {
-    setNotesList(notesList.filter((_, i) => i !== index))
-  }
+ const handleDelete = useCallback((index) => {
+  setNotesList(prev =>
+    prev.filter((_, i) => i !== index)
+  )
+}, [setNotesList])
 
  const filteredNotes = useMemo(() => {
   return notesList.filter(n =>
