@@ -1,6 +1,7 @@
 import useLocalStorage from "../hooks/useLocalStorage"
 import { useState,useMemo , useCallback} from "react"
 import NoteCard from "../components/NoteCard"
+import { addNoteAPI } from "../services/notesService"
 
 export default function Notes() {
 
@@ -10,24 +11,31 @@ export default function Notes() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
 
-  const handleAddNote = async () => {
+ const handleAddNote = async () => {
 
-    if (!note.trim()) {
-      setMessage("Note cannot be empty ❌")
-      return
-    }
+  if (!note.trim()) {
+    setMessage("Note cannot be empty ❌")
+    return
+  }
 
-    setLoading(true)
+  setLoading(true)
 
-    await new Promise(res => setTimeout(res, 1000))
+  try {
+    const res = await addNoteAPI(note)
 
-    setNotesList([...notesList, note])
-    setNote("")
-    setLoading(false)
+    setNotesList(prev => [...prev, res.data])
+
     setMessage("Note added successfully ✅")
-
+    setNote("")
+  }
+  catch (err) {
+    setMessage("Something went wrong ❌")
+  }
+  finally {
+    setLoading(false)
     setTimeout(() => setMessage(""), 2000)
   }
+}
 
  const handleDelete = useCallback((index) => {
   setNotesList(prev =>
