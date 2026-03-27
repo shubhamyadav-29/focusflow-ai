@@ -1,11 +1,9 @@
-import axios from "axios"
-
-const API_DELAY = 1000
+import api from "./api"
 
 export const addNoteAPI = (note) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ data: note })
-    }, API_DELAY)
+    }, 1000)
   })
 }
