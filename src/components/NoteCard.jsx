@@ -15,20 +15,49 @@ function NoteCard({ text, onDelete }) {
 
   return (
     <div style={{
-      border: "1px solid #ccc",
-      padding: "10px",
-      margin: "10px 0",
-      borderRadius: "8px"
+      background: "#fff",
+      padding: "15px",
+      marginTop: "15px",
+      borderRadius: "10px",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.1)"
     }}>
-      <p>{text}</p>
+      <p style={{ marginBottom: "10px" }}>{text}</p>
 
-      <button onClick={onDelete}>Delete</button>
+      <div style={{ display: "flex", gap: "10px" }}>
+        <button
+          onClick={onDelete}
+          style={{
+            background: "#ef4444",
+            color: "#fff",
+            border: "none",
+            padding: "6px 10px",
+            borderRadius: "6px",
+            cursor: "pointer"
+          }}
+        >
+          Delete
+        </button>
 
-      <button onClick={handleSummarize}>
-        {loading ? "Summarizing..." : "Summarize"}
-      </button>
+        <button
+          onClick={handleSummarize}
+          style={{
+            background: "#10b981",
+            color: "#fff",
+            border: "none",
+            padding: "6px 10px",
+            borderRadius: "6px",
+            cursor: "pointer"
+          }}
+        >
+          {loading ? "..." : "Summarize"}
+        </button>
+      </div>
 
-      {summary && <p><strong>Summary:</strong> {summary}</p>}
+      {summary && (
+        <p style={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
+          <strong>Summary:</strong> {summary}
+        </p>
+      )}
     </div>
   )
 }

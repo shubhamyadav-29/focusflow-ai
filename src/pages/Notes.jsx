@@ -1,88 +1,45 @@
-import useLocalStorage from "../hooks/useLocalStorage"
-import { useState,useMemo , useCallback} from "react"
-import NoteCard from "../components/NoteCard"
-import { addNoteAPI } from "../services/notesService"
+<div style={{ maxWidth: "700px", margin: "auto" }}>
+  <h1 style={{ marginBottom: "20px" }}>📝 Notes</h1>
 
-export default function Notes() {
+  {message && <p>{message}</p>}
 
-  const [notesList, setNotesList] = useLocalStorage("notes", [])
-  const [note, setNote] = useState("")
-  const [search, setSearch] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
+  <input
+    placeholder="Search..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    style={{
+      width: "100%",
+      padding: "10px",
+      marginBottom: "15px",
+      borderRadius: "8px",
+      border: "1px solid #ccc"
+    }}
+  />
 
- const handleAddNote = async () => {
+  <input
+    value={note}
+    onChange={(e) => setNote(e.target.value)}
+    placeholder="Write note..."
+    style={{
+      width: "100%",
+      padding: "10px",
+      marginBottom: "10px",
+      borderRadius: "8px",
+      border: "1px solid #ccc"
+    }}
+  />
 
-  if (!note.trim()) {
-    setMessage("Note cannot be empty ❌")
-    return
-  }
-
-  setLoading(true)
-
-  try {
-    const res = await addNoteAPI(note)
-
-    setNotesList(prev => [...prev, res.data])
-
-    setMessage("Note added successfully ✅")
-    setNote("")
-  }
-  catch (err) {
-    setMessage("Something went wrong ❌")
-  }
-  finally {
-    setLoading(false)
-    setTimeout(() => setMessage(""), 2000)
-  }
-}
-
- const handleDelete = useCallback((index) => {
-  setNotesList(prev =>
-    prev.filter((_, i) => i !== index)
-  )
-}, [setNotesList])
-
- const filteredNotes = useMemo(() => {
-  return notesList.filter(n =>
-    n.toLowerCase().includes(search.toLowerCase())
-  )
-}, [notesList, search])
-
-  return (
-    <div>
-      <h1>Notes</h1>
-
-      {message && <p>{message}</p>}
-
-      <input
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <br /><br />
-
-      <input
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder="Write note..."
-      />
-
-      <button onClick={handleAddNote}>
-        {loading ? "Adding..." : "Add"}
-      </button>
-
-      {
-        filteredNotes.map((n, index) => (
-          <NoteCard
-            key={index}
-            text={n}
-            onDelete={() => handleDelete(index)}
-          />
-        ))
-      }
-
-    </div>
-  )
-}
+  <button
+    onClick={handleAddNote}
+    style={{
+      padding: "10px 15px",
+      borderRadius: "8px",
+      border: "none",
+      background: "#2563eb",
+      color: "#fff",
+      cursor: "pointer"
+    }}
+  >
+    {loading ? "Adding..." : "Add Note"}
+  </button>
+</div>
