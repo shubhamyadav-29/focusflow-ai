@@ -28,30 +28,30 @@ function NoteCard({ text, onDelete }) {
           onClick={onDelete}
           style={{
             background: "#ef4444",
-            color: "#fff",
-            border: "none",
-            padding: "6px 10px",
-            borderRadius: "6px",
-            cursor: "pointer"
-          }}
-        >
-          Delete
-        </button>
+      //       color: "#fff",
+      //       border: "none",
+      //       padding: "6px 10px",
+      //       borderRadius: "6px",
+      //       cursor: "pointer"
+      //     }}
+      //   >
+      //     Delete
+      //   </button>
 
-        <button
-          onClick={handleSummarize}
-          style={{
-            background: "#10b981",
-            color: "#fff",
-            border: "none",
-            padding: "6px 10px",
-            borderRadius: "6px",
-            cursor: "pointer"
-          }}
-        >
-          {loading ? "..." : "Summarize"}
-        </button>
-      </div>
+      //   <button
+      //     onClick={handleSummarize}
+      //     style={{
+      //       background: "#10b981",
+      //       color: "#fff",
+      //       border: "none",
+      //       padding: "6px 10px",
+      //       borderRadius: "6px",
+      //       cursor: "pointer"
+      //     }}
+      //   >
+      //     {loading ? "..." : "Summarize"}
+      //   </button>
+      // </div>
 
       {summary && (
         <p style={{ marginTop: "10px", fontSize: "14px", color: "#555" }}>
